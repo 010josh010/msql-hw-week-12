@@ -14,7 +14,6 @@ CREATE TABLE products(
 
 ); 
 
-
 INSERT INTO products(
 	productName, 
 	departmentName, 
@@ -41,4 +40,19 @@ VALUES(
 	'Electronics', 
 	49.99, 
 	2 
+);
+
+
+INSERT INTO products(
+	productName, 
+	departmentName, 
+	price, 
+	stockQuantity
+)
+
+VALUES(
+	'Skateboard Deck', 
+	'Sports', 
+	39.99, 
+	200 
 );

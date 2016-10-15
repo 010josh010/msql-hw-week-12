@@ -1,91 +1,53 @@
-const MYSQL = require('mysql'); 
+//constants 
+const database = require('./connection.js'); 
+const Table = require('cli-table2');
+ 
 
-//initializes connection to the MYSQL database 
-const connection = MYSQL.createConnection({
-	host: 'localhost', 
-	port: 3306, 
-	user: 'root',
-	password: '',
-	database:'bamazon_db' 
-})
-
-//displays if the connection is successful 
-connection.connect((err)=>{
-
-	if(err)console.error(err); 
-
-	console.log("connected as id", connection.threadId); 
-}); 
-
-
-let 
-
-// 		IT CREATES 
-function post(item){
-	var flavor = {item:item}; 
-
-	connection.query('INSERT INTO products SET ?', flavor, (err,res)=>{
-
-		if(err)console.error(err)
-			
-			
-	})
-
-}
-
-
-// IT UPDATES 
-function update(item){
-
-	connection.query('UPDATE products SET ? WHERE ?', {item:item}, (err,res)=>{
-
-		if(err)console.err(err); 
-
-	})
-}
-
-
-//IT DELETES 
-
-function delete(item){
-	connection.query('DELETE FROM products WHERE ?', {item:item}, (err, res)=>{
-
-		if(err)console.error(err); 
-
-	 
-	})
-}
-
-
-//IT READS 
-let  get= () => {
-		connection.query('SELECT * FROM flavors' ,(err,res)=>{
-		var results = []
-
-		if(err)console.err(err)
+//PERFORMS A GET REQUEST TO THE DATABASE AND PRINTS OUT THE INFORMATION TO THE CLI  
+let  getAllItems = function(table) {
+		database.connection.query('SELECT * FROM '+ table ,(err,res)=>{
 		
-		results = res;
+		if(err)console.err(err)
+		//ties the response to the local variable results 
+		let results = res;
+
+		// initializes a new table and sets parameters 
+		let table = new Table({
+		    head: ['ID', 'Item-name', 'Department' ,'Price', 'Stock QTY'], 
+		    colWidths: [5, 25, 25, 10 , 12]
+		});
 
 
-		results.filter((item)=>{
-			console.log('Item '+item['item']); 
+       //pushes the response obj items into the new table that was created 
+		results.forEach((item) => {
+			table.push(
+	    	[ item.itemID, item.productName , item.departmentName , item.price , item.stockQuantity] 
 
-		}); 
+			);
+		})
+ 		
+ 		//prints out the table to the command line 
+		console.log(table.toString());
+		
 	})
-}
+}; 
 
 
-//ends the connection to the database
-let endConnection = ()=>{
+//ENDS THE CURRENT MYSQL CONNECTION 
+let endConnection = function() {
 
-		connection.end(function(err) {
-	  	if(err)console.error(err)
+		database.connection.end(function(err) {
+	  	
+	  	if(err) throw err; 
 
 	  	console.log('connection terminated'); 
 
 	});
-}
+}; 
 
+
+//MAIN 
+getAllItems('products'); 
 
 
 
