@@ -23,9 +23,7 @@ let displayItem = function(item){
 		console.log(table.toString());
 
 
-}
-
-
+};
 
 // //UPDATES THE DATABASE AND INFORMS THE USER THAT THIER PRODUCT HAS ORDERED!; 
 let processOrder = function(item , qty){
@@ -49,10 +47,10 @@ let processOrder = function(item , qty){
 
 			console.log('order successful:','Qty:'+ qty , item.productName ,'Total: $'+ item.price * qty);
 			
-		} 
+		}; 
 
-	})
-}
+	});
+};
 
 
 //PERFORMS A GET REQUEST TO THE DATABASE FOR ALL ITEMS AND STARTS A NEW ORDER PROMPT
@@ -107,6 +105,9 @@ let  newOrder = function(table) {
 						let message = 'Sorry , product is sold out!'; 
 
 						console.log(message); 
+
+						//restarts the order menu 
+						newOrder('products');  
 					}
 					else if(entry.qty > item.stockQuantity ){
 
@@ -126,7 +127,7 @@ let  newOrder = function(table) {
 
 				}); 
 
-	})
+	});
 }; 
 
 
